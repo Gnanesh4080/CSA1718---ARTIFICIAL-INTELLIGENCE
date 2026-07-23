@@ -1,43 +1,37 @@
-Vacuum Cleaner Problem
-# Vacuum Cleaner Problem
+Crypt-Arithmetic Problem
+from itertools import permutations
 
-# Environment
-rooms = {
-    'A': 'Dirty',
-    'B': 'Dirty'
-}
+# Function to solve the crypt-arithmetic puzzle
+def solve():
+    letters = ('S', 'E', 'N', 'D', 'M', 'O', 'R', 'Y')
+    digits = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
-# Vacuum starts in Room A
-location = 'A'
+    for perm in permutations(digits, len(letters)):
+        d = dict(zip(letters, perm))
 
-print("Initial Room Status:")
-print(rooms)
-print()
+        # Leading letters cannot be zero
+        if d['S'] == 0 or d['M'] == 0:
+            continue
 
-while True:
+        SEND = 1000*d['S'] + 100*d['E'] + 10*d['N'] + d['D']
+        MORE = 1000*d['M'] + 100*d['O'] + 10*d['R'] + d['E']
+        MONEY = 10000*d['M'] + 1000*d['O'] + 100*d['N'] + 10*d['E'] + d['Y']
 
-    if rooms[location] == "Dirty":
-        print("Vacuum is in Room", location)
-        print("Room", location, "is Dirty.")
-        print("Action: SUCK\n")
-        rooms[location] = "Clean"
+        if SEND + MORE == MONEY:
+            print("Solution Found!")
+            print("-----------------------")
+            print("S =", d['S'])
+            print("E =", d['E'])
+            print("N =", d['N'])
+            print("D =", d['D'])
+            print("M =", d['M'])
+            print("O =", d['O'])
+            print("R =", d['R'])
+            print("Y =", d['Y'])
+            print("-----------------------")
+            print("SEND  =", SEND)
+            print("MORE  =", MORE)
+            print("MONEY =", MONEY)
+            return
 
-    else:
-        print("Vacuum is in Room", location)
-        print("Room", location, "is already Clean.\n")
-
-    # Check if both rooms are clean
-    if rooms['A'] == "Clean" and rooms['B'] == "Clean":
-        print("All rooms are clean.")
-        break
-
-    # Move to the other room
-    if location == 'A':
-        print("Moving from Room A to Room B...\n")
-        location = 'B'
-    else:
-        print("Moving from Room B to Room A...\n")
-        location = 'A'
-
-print("\nFinal Room Status:")
-print(rooms)
+solve()
